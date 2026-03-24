@@ -10,8 +10,10 @@
     "start": "vite"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.0",
