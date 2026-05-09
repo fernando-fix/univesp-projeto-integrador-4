@@ -13,6 +13,7 @@ export default function App() {
   const liveRef = useRef(null);
 
   const [theme, setTheme] = useState("light");
+  const [states, setStates] = useState([]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -20,6 +21,35 @@ export default function App() {
       setTheme(savedTheme);
       document.documentElement.classList.toggle("dark", savedTheme === "dark");
     }
+
+    const consultarEstados = async () => {
+      setLoading(true);
+      try {
+
+        const qs = new URLSearchParams();
+        const res = await fetch(`${API_BASE}/estados?${qs.toString()}`);
+        const data = await res.json();
+
+        console.table(data);
+        let newData = [];
+        data.map(
+          (estado) => {
+            console.log(estado.SG_UF, estado.NO_UF);
+            newData.push({ sigla: estado.SG_UF, nome: estado.NO_UF });
+          }
+        )
+        setStates(newData);
+
+      } catch (err) {
+        setResultado({ erro: 'Falha ao consultar' });
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    consultarEstados();
+
   }, []);
 
   const toggleTheme = () => {
@@ -131,15 +161,25 @@ export default function App() {
               Digite os municípios (separados por vírgula)
             </h2>
 
-            <input
-              aria-describedby="dica-municipios"
-              aria-label="Campo para inserir nomes de municípios separados por vírgula"
-              type="text"
-              value={municipios}
-              onChange={e => setMunicipios(e.target.value)}
-              className="w-4/5 p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
-            />
+            <div className='flex gap-2'>
+              <select className='w-1/5 p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800'>
 
+                {states.map(estate => (
+                  <option key={estate.sigla} value={estate.sigla}>
+                    {estate.nome}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                aria-describedby="dica-municipios"
+                aria-label="Campo para inserir nomes de municípios separados por vírgula"
+                type="text"
+                value={municipios}
+                onChange={e => setMunicipios(e.target.value)}
+                className="w-4/5 p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
+              />
+            </div>
             <div id="dica-municipios" className="text-sm text-gray-500 mt-1">
               Ex.: São Roque, Votorantim, Sorocaba
             </div>

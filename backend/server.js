@@ -43,6 +43,15 @@ app.get('/metrics', async (req, res) => {
   res.end(await client.register.metrics());
 });
 
+app.get('/api/estados', async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM CensoEscolar_UF ORDER BY SG_UF");
+    res.json(rows);
+  } catch (e) {
+    return res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
 // Docs Swagger
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
