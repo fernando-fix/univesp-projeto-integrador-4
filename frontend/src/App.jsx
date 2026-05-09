@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE ? '' : '/api'; // backend reverso ou variável
+const API_BASE = "http://localhost:3001/api";
 
 export default function App() {
   const [series, setSeries] = useState([]);

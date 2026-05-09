@@ -1,5 +1,5 @@
 // test_connection.js
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
 (async () => {
   try {
